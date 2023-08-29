@@ -12,4 +12,6 @@ abstract class FoodItem{
         $this->description = $description;
         $this->price = $price;
     }
+
+    abstract public function getCategory(): string;
 }
