@@ -9,4 +9,8 @@ class Customer extends Person{
         parent::__construct($make, $age, $address);
     }
 
+    public function interestedCategories($restaurant): array{
+        return array();
+    }
+
 }
