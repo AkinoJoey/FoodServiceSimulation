@@ -9,7 +9,7 @@ class CheeseBurger extends FoodItem{
         parent::__construct("Cheese Burger","Classic burger with delicious cheese.",800);
     }
 
-    public function getCategory(): string
+    public static function getCategory(): string
     {
         return CheeseBurger::CATEGORY;
     }
