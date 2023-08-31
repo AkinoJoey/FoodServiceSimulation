@@ -12,12 +12,20 @@ class Chef extends Employee{
 
     public function prepareFood(FoodOrder $foodOrder): string{
         $foodItems = $foodOrder->getItems();
-        $output = $this->getName() . " was cooking ";
+        $chefName = $this->getName();
+        $output = $chefName . " was cooking ";
+        $cookTime = 0;
 
-        foreach($foodItems as $item){
-            $foodName = $item->name;
+        for($i = 0; $i < count($foodItems); $i++){
+            $item = $$foodItems[$i];
+            $foodName = $item->getName();
             $output .= $foodName . "." . "\n";
+            $cookTime += $item->getCookTime();
         }
+
+        print($output);
+        printf($chefName . " took " . (string)$cookTime . "minutes to cook." );
+
         return $output;
     }
 }

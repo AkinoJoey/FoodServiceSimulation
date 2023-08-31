@@ -3,6 +3,8 @@
 namespace Restaurants;
 
 use Invoices\Invoice;
+use Persons\Employees\Chef;
+use Persons\Employees\Cashier;
 
 class Restaurant{
     private array $menu;
@@ -21,9 +23,34 @@ class Restaurant{
         return $this->employees;
     }
 
-    // 注文するカテゴリを受け取って、情報を
-    // public function order(array $categories): Invoice{
+    public function chooseChef() : Chef {
+        for($i = 0; $i < count($this->employees); $i++){
+            $employee = $this->employees[$i];
+            if($employee::class == "Persons\Employees\Chef"){
+                return $employee;
+            }
+        }
+    }
 
-    // }
+    public function chooseCashier() :Cashier {
+        for($i = 0; $i < count($this->employees); $i++){
+            $employee = $this->employees[$i];
+            if($employee::class == "Persons\Employees\Cashier"){
+                return $employee;
+            }
+        }
+    }
+
+    public function order(array $categories): Invoice{
+        $cashier = $this->chooseCashier();
+        $foodOrder = $cashier->generateOrder($categories, $this);
+
+        $chef = $this->chooseChef();
+        $chef->prepareFood($foodOrder);
+
+        $invoice = $cashier->generateInvoice($foodOrder);
+
+        return $invoice;
+    }
 
 }
