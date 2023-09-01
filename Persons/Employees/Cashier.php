@@ -6,29 +6,30 @@ use FoodOrders\FoodOrder;
 use Persons\Employees\Employee;
 use Restaurants\Restaurant;
 use Invoices\Invoice;
+
 class Cashier extends Employee{
     public function __construct(string $name, int $age, string $address, int $employeeId, float $salary) {
         parent::__construct($name, $age, $address, $employeeId, $salary);
     }
 
-    // categories [string foodName => int number]の連想配列 string[]
-    // orderMap [FoodItem foodItem => int number]の連想配列 FoodItem[]
+    // categories [string foodName]の連想配列 string[]
+    // ["cheeseBurger", "cheeseBurger"];
+
+    // orderList = [FoodItem foodItem] FoodItem[] 数をどうやって計算するか,array_count_values()
+    // new FoodItemをする必要がある
     public function generateOrder(array $categories, Restaurant $restaurant):FoodOrder{
         $outputText = $this->getName() . " received the order.";
-        print($outputText);
+        print($outputText . "\n");
 
-        $orderMap = [];
+        $items = [];
         $menu = $restaurant->getMenu();
 
-        for($i = 0; $i < count($menu); $i++){
-            $foodItem = $menu[$i];
-            $foodName = $foodItem->getName();
-            if(array_key_exists($foodName,$categories)){
-                $orderMap[$foodItem] = $categories[$foodName];
-            }
+        for($i = 0; $i < count($categories); $i++){
+            $className = "\\FoodItems\\" . $categories[$i];
+            array_push($items,  new $className());
         }
 
-        return new FoodOrder($orderMap);
+        return new FoodOrder($items);
     }
 
     // 受け取ったfoodOrderのinvoiceを作成する
@@ -37,15 +38,16 @@ class Cashier extends Employee{
         $orderTime = $foodOrder->getOrderTime();
         $estimatedTimeInMinutes = $this->returnEstimatedCookTime($foodOrder);
 
-        print($this->getName() . " made the invoice.");
+        print($this->getName() . " made the invoice." . "\n");
         return new Invoice($finalPrice, $orderTime, $estimatedTimeInMinutes);
     }
 
     public function returnFinalPrice(array $items) : float {
         $finalPrice = 0;
 
-        foreach($items as $item => $number){
-            $finalPrice += $item * $number;
+        for($i = 0; $i < count($items); $i++){
+            $item = $items[$i];
+            $finalPrice += $item->getPrice();
         }
 
         return $finalPrice;
