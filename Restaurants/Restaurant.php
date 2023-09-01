@@ -46,7 +46,8 @@ class Restaurant{
         $foodOrder = $cashier->generateOrder($categories, $this);
 
         $chef = $this->chooseChef();
-        $chef->prepareFood($foodOrder);
+        $textPrepareFood = $chef->prepareFood($foodOrder);
+        print($textPrepareFood);
 
         $invoice = $cashier->generateInvoice($foodOrder);
 
