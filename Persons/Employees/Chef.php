@@ -13,18 +13,17 @@ class Chef extends Employee{
     public function prepareFood(FoodOrder $foodOrder): string{
         $foodItems = $foodOrder->getItems();
         $chefName = $this->getName();
-        $output = $chefName . " was cooking ";
+        $output = "";
         $cookTime = 0;
 
         for($i = 0; $i < count($foodItems); $i++){
-            $item = $$foodItems[$i];
-            $foodName = $item->getName();
-            $output .= $foodName . "." . "\n";
+            $item = $foodItems[$i];
+            $category = $item->getName();
             $cookTime += $item->getCookTime();
+            $output .= $chefName . " was cooking " . $category . "." . "\n";
         }
-
-        print($output);
-        printf($chefName . " took " . (string)$cookTime . "minutes to cook." );
+        
+        $output .= $chefName . " took " . (string)$cookTime . " minutes to cook."  . "\n";
 
         return $output;
     }
