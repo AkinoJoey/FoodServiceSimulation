@@ -5,8 +5,6 @@ namespace Persons\Customers;
 use Persons\Person;
 use Restaurants\Restaurant;
 use Invoices\Invoice;
-use Persons\Employees\Employee;
-
 
 class Customer extends Person{
     private array $interestedTastesMap;
@@ -24,34 +22,41 @@ class Customer extends Person{
 
         $output .= $imploded_keys . ".";
         
-        print($output);
+        print($output . "\n");
     }
 
-    // [string foodName => int number]を返す
+    // [string foodName]を返す
+    // ["cheeseBurger", "cheeseBurger"];
     public function InterestedCategories(Restaurant $restaurant) : array {
         $orderList = [];
         $menu = $restaurant->getMenu();
 
-        for($i = 0; $i < count($menu); $i++){
-            $foodName = $menu[$i]->getName();
-            if(array_key_exists($foodName,$this->interestedTastesMap)){
-                $orderList[$foodName] = $this->interestedTastesMap[$foodName];
+        foreach($this->interestedTastesMap as $category=> $number){
+            $className = "\\FoodItems\\". $category;
+            if(class_exists($className)){
+                for($i = 0; $i < $number; $i++){
+                    $orderList[] = $category;
+                }
             }
         }
-        
+
         return $orderList;
     }
-
     
     public function order(Restaurant $restaurant, array $categories): Invoice{
             $text = $this->getName() . " was looking at the menu, and ordered " ;
+            $categoriesCountValues = array_count_values($categories);
 
-            foreach($categories as $foodName => $number){
-                $text .= $foodName . " x " . $number;
+            foreach($categoriesCountValues as $category => $number){
+                $text .= $category . " x " . $number;
+                if($number === end($categoriesCountValues)){
+                    $text .= ".";
+                }else{
+                    $text .= ", ";
+                }
             }
 
-            $text .= ".";
-            print($text);
+            print($text . "\n");
 
             $invoice = $restaurant->order($categories);
             return $invoice;
