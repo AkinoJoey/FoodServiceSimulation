@@ -16,7 +16,7 @@ class Invoice{
     public function printInvoice() : void {
         print("--------------------------------------" . "\n");
         print("Date: " . $this->orderTime . "\n");
-        print("Final Price: $" . (string)$this->finalPrice);
+        print("Final Price: $" . (string)$this->finalPrice . "\n");
         print("--------------------------------------" . "\n");
     }
 
