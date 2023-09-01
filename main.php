@@ -16,6 +16,9 @@ spl_autoload_register('myAutoloader');
 
 
 $cheeseBurger = new \FoodItems\CheeseBurger();
+$fettuccine = new \FoodItems\Fettuccine();
+$hawaiianPizza = new \FoodItems\HawaiianPizza();
+$spaghetti = new \FoodItems\Spaghetti();
 
 $Inavah = new \Persons\Employees\Chef("Inayah Lozano", 40, "Osaka", 1, 30);
 $Nadia = new \Persons\Employees\Cashier("Nadia Valentine", 21, "Tokyo", 1, 20);
@@ -23,6 +26,9 @@ $Nadia = new \Persons\Employees\Cashier("Nadia Valentine", 21, "Tokyo", 1, 20);
 $saizeriya = new \Restaurants\Restaurant(
     [
         $cheeseBurger,
+        $fettuccine,
+        $hawaiianPizza,
+        $spaghetti
     ],
     [
         $Inavah,
